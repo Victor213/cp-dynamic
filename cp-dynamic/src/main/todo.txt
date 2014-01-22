@@ -1,0 +1,33 @@
+Test Hi
+Apache config:
+
+LoadModule  proxy_module         modules/mod_proxy.so
+LoadModule  proxy_http_module    modules/mod_proxy_http.so
+LoadModule  headers_module       modules/mod_headers.so
+
+<VirtualHost *:80>
+    ServerAdmin admin@example.com
+    ProxyRequests off
+    DocumentRoot "C:/Users/Falter/git/cp-static/cp-static/WebContent"
+    ProxyPreserveHost On
+ 
+    ServerName example.com
+ 
+    ErrorLog "logs/error.log"
+    CustomLog "logs/access.log" common
+ 
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel debug
+ 
+    <LocationMatch "^/app/(.*)$">
+		ProxyPassMatch http://localhost:8080/app/$1
+		ProxyPassReverse http://localhost:8080/app/
+        Order allow,deny
+        Allow from all
+    </LocationMatch>
+ 
+</VirtualHost>
+
+
+
